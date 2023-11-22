@@ -6,9 +6,22 @@ pipeline {
         }
     }
     stages {
-        stage('Build') { 
+        stage('Checkout') {
             steps {
-                sh 'mvn -B -DskipTests clean package' 
+                dir('C:/Users/maxfa/OneDrive/Documents/GitHub/simple-java-maven-app') {
+                    checkout scm
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    def mavenHome = tool 'Maven'
+                    def mavenCMD = "${mavenHome}/bin/mvn"
+
+                    bat "${mavenCMD} -B -DskipTests clean package"
+                }
             }
         }
     }
